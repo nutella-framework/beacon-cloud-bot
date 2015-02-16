@@ -18,7 +18,8 @@ In order to interact with this bot you can use the library Nutella client librar
 
 | Channel                    | Function                  | Request -> Response | Request       | Response                              |
 | -------------------------- | ------------------------- | ------------------- | ------------- | ------------------------------------- |
-| /beacon/beacons/           | Request all the resources | client -> server    | {}            | {beacons: [\<beacon\>*]}              |
+| /beacon/beacons            | Request all the beacons   | client -> server    | {}            | {beacons: [\<beacon\>*]}              |
+| /beacon/uuids              | Request all the uuids     | client -> server    | {}            | {uuids: [''*]}                        |
 
 
 \<beacon\> ::= {rid: '', major: '\<number\>', minor: '\<number\>'}
