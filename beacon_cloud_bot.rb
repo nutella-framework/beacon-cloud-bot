@@ -14,14 +14,16 @@ beacons = nutella.persist.getJsonStore("db/beacons.json")
 nutella.net.subscribe("beacon/beacon/add", lambda do |message|
 										puts message;
 										rid = message["rid"]
+										uuid = message["uuid"]
 										major = message["major"]
 										minor = message["minor"]
 
-										if(rid != nil && major != nil && minor != nil)
+										if(rid != nil && uuid != nil && major != nil && minor != nil)
 											beacons.transaction {
 												if(beacons[rid] == nil)
 													beacons[rid] = {
 														"rid" => rid,
+														"uuid" => uuid,
 														"major" => major,
 														"minor" => minor
 													}
@@ -74,6 +76,20 @@ nutella.net.handle_requests("beacon/beacons") do |request|
 		end
 	}
 	{"beacons" => beaconList}
+end
+
+# Request all the UUIDs
+nutella.net.handle_requests("beacon/uuids") do |request|
+	puts "Send the uuid list"
+	uuidList = []
+	beacons.transaction {
+		for beacon in beacons.roots()
+			if(!uuidList.include? beacons[beacon]["uuid"])
+				uuidList.push(beacons[beacon]["uuid"])
+			end
+		end
+	}
+	{"uuids" => uuidList}
 end
 
 puts "Initialization completed"
