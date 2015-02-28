@@ -3,7 +3,7 @@ require 'json'
 
 
 # Initialize nutella
-nutella.init ARGV
+nutella.init("crepe", "localhost", "beacon-cloud-bot")
 
 puts "Room places initialization"
 
@@ -11,7 +11,7 @@ puts "Room places initialization"
 beacons = nutella.persist.getJsonStore("db/beacons.json")
 
 # Create new beacon
-nutella.net.subscribe("beacon/beacon/add", lambda do |message|
+nutella.net.subscribe("beacon/beacon/add", lambda do |message, component_id, resource_id|
 										puts message;
 										rid = message["rid"]
 										uuid = message["uuid"]
@@ -36,7 +36,7 @@ nutella.net.subscribe("beacon/beacon/add", lambda do |message|
 									end)
 
 # Create new beacon
-nutella.net.subscribe("beacon/beacon/remove", lambda do |message|
+nutella.net.subscribe("beacon/beacon/remove", lambda do |message, component_id, resource_id|
 										puts message;
 										rid = message["rid"]
 
@@ -67,7 +67,7 @@ def publishBeaconRemove(beacon)
 end
 
 # Request all the beacons
-nutella.net.handle_requests("beacon/beacons") do |request|
+nutella.net.handle_requests("beacon/beacons", lambda do |request, component_id, resource_id|
 	puts "Send the beacon list"
 	beaconList = []
 	beacons.transaction {
@@ -76,10 +76,10 @@ nutella.net.handle_requests("beacon/beacons") do |request|
 		end
 	}
 	{"beacons" => beaconList}
-end
+end)
 
 # Request all the UUIDs
-nutella.net.handle_requests("beacon/uuids") do |request|
+nutella.net.handle_requests("beacon/uuids", lambda do |request, component_id, resource_id|
 	puts "Send the uuid list"
 	uuidList = []
 	beacons.transaction {
@@ -90,7 +90,7 @@ nutella.net.handle_requests("beacon/uuids") do |request|
 		end
 	}
 	{"uuids" => uuidList}
-end
+end)
 
 puts "Initialization completed"
 
