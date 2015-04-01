@@ -16,10 +16,12 @@ In order to interact with this bot you can use the library Nutella client librar
 
 ## Request - Response channels
 
-| Channel                    | Function                  | Request -> Response | Request       | Response                              |
-| -------------------------- | ------------------------- | ------------------- | ------------- | ------------------------------------- |
-| /beacon/beacons            | Request all the beacons   | client -> server    | {}            | {beacons: [\<beacon\>*]}              |
-| /beacon/uuids              | Request all the uuids     | client -> server    | {}            | {uuids: [''*]}                        |
+| Channel                    | Function                   | Request -> Response | Request           | Response                              |
+| -------------------------- | -------------------------- | ------------------- | ----------------- | ------------------------------------- |
+| /beacon/beacons            | Request all the beacons    | client -> server    | {}                | {beacons: [\<beacon\>*]}              |
+| /beacon/uuids              | Request all the uuids      | client -> server    | {}                | {uuids: [''*]}                        |
+| /beacon/virtual_beacon   | Request new iBeacon codes  | client -> server    | {rid:'\<string\>} | {major: \<int\>, minor: \<int\>}      |      |
+
 
 
 \<beacon\> ::= {rid: '', major: '\<number\>', minor: '\<number\>'}
